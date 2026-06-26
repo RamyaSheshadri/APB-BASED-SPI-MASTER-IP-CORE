@@ -79,9 +79,11 @@ In addition to generating `SCLK`, it also generates the internal timing signals 
 - Provides synchronized clocking for reliable SPI communication.
 
 ## Output waveform:
-<img width="512" height="259" alt="image" src="https://github.com/user-attachments/assets/d69373e4-bc97-414c-8fae-3e9cd1fd0ff5" />
+Case 1: CPOL=CPHA
+<img width="955" height="361" alt="image" src="https://github.com/user-attachments/assets/5a16ab8b-cd5d-4724-806f-f0f60e50626d" />
 
-<img width="512" height="94" alt="image" src="https://github.com/user-attachments/assets/8162a8d8-0aed-4328-aa9d-218ab09e504f" />
+Case 2: CPOL!=CPHA
+<img width="955" height="358" alt="image" src="https://github.com/user-attachments/assets/7c3e7e6b-7d9a-4790-80ed-166cc2eb69fc" />
 
 ## Inference:
 ### Waveform Observations
