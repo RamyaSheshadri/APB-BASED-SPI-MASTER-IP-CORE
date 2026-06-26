@@ -20,3 +20,72 @@ To understand the complete communication flow, let us consider a simple example 
 6. The temperature sensor sends the requested data back to the SPI Master through the **MISO** line.
 7. The SPI Master stores the received data in its data register.
 8. Finally, the CPU reads the received data through the APB interface.
+
+## 1. Baud Generator (Serial Clock Generator)
+
+The **Baud Generator** is responsible for generating the SPI serial clock (`SCLK`) required for communication between the SPI Master and SPI Slave. Since the system clock (`PCLK`) is much faster than the clock supported by most SPI peripherals, the Baud Generator divides the input clock to produce the desired SPI clock frequency.
+
+In addition to generating `SCLK`, it also generates the internal timing signals required for transmitting (`MOSI`) and receiving (`MISO`) data according to the selected SPI mode.
+
+### Functions
+
+- Generates the SPI serial clock (`SCLK`).
+- Divides the system clock (`PCLK`) to the required SPI frequency.
+- Supports all four SPI modes using **CPOL** and **CPHA**.
+- Generates separate timing signals for data transmission and reception.
+- Synchronizes MOSI shifting and MISO sampling.
+
+### Inputs
+
+| Signal | Description |
+|---------|-------------|
+| `PCLK` | System clock used for clock generation. |
+| `PRESETn` | Active-low reset. |
+| `sppr_i[2:0]` | Baud rate prescaler. |
+| `spr_i[2:0]` | Baud rate select bits. |
+| `cpol_i` | Clock polarity selection. |
+| `cpha_i` | Clock phase selection. |
+| `ss_i` | Slave Select signal. Clock generation starts when this signal is asserted. |
+
+### Outputs
+
+| Signal | Description |
+|---------|-------------|
+| `sclk_o` | SPI Serial Clock output. |
+| `mosi_send_sclk_o` | Transmit timing signal for MOSI. |
+| `mosi_send_sclk0_o` | Alternate transmit timing signal. |
+| `miso_receive_sclk_o` | Receive timing signal for MISO. |
+| `miso_receive_sclk0_o` | Alternate receive timing signal. |
+| `BaudRateDivisor_o` | Final clock divider value used to generate `SCLK`. |
+
+### Working
+
+1. The system clock (`PCLK`) is provided to the Baud Generator.
+2. The baud rate configuration (`sppr_i` and `spr_i`) determines the required clock division factor.
+3. The divider generates a lower-frequency SPI clock (`SCLK`).
+4. The idle state of `SCLK` is determined by **CPOL**.
+5. Based on **CPHA**, separate transmit and receive timing signals are generated.
+6. These timing signals are used by the Shift Register to control MOSI transmission and MISO sampling.
+
+### Block Diagram
+
+```text
+           PCLK
+             │
+             ▼
+     +------------------+
+     |  Baud Generator  |
+     | (Clock Divider)  |
+     +------------------+
+        │     │      │
+        ▼     ▼      ▼
+      SCLK   TX CLK  RX CLK
+```
+
+### Key Features
+
+- Programmable SPI clock generation.
+- Supports all SPI modes (Mode 0–3).
+- Configurable baud rate.
+- Separate timing signals for transmit and receive operations.
+- Provides synchronized clocking for reliable SPI communication.
