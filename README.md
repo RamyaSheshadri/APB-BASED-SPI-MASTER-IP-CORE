@@ -24,6 +24,8 @@ To understand the complete communication flow, let us consider a simple example 
 <img width="512" height="337" alt="image" src="https://github.com/user-attachments/assets/a0fa8319-543d-4006-bf91-5d56389bece7" />
 
 
+
+
 ## 1. Baud Generator (Serial Clock Generator)
 
 The **Baud Generator** is responsible for generating the SPI serial clock (`SCLK`) required for communication between the SPI Master and SPI Slave. Since the system clock (`PCLK`) is much faster than the clock supported by most SPI peripherals, the Baud Generator divides the input clock to produce the desired SPI clock frequency.
