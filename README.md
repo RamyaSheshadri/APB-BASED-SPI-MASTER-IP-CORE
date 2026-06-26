@@ -70,21 +70,6 @@ In addition to generating `SCLK`, it also generates the internal timing signals 
 5. Based on **CPHA**, separate transmit and receive timing signals are generated.
 6. These timing signals are used by the Shift Register to control MOSI transmission and MISO sampling.
 
-### Block Diagram
-
-```text
-           PCLK
-             │
-             ▼
-     +------------------+
-     |  Baud Generator  |
-     | (Clock Divider)  |
-     +------------------+
-        │     │      │
-        ▼     ▼      ▼
-      SCLK   TX CLK  RX CLK
-```
-
 ### Key Features
 
 - Programmable SPI clock generation.
@@ -92,3 +77,43 @@ In addition to generating `SCLK`, it also generates the internal timing signals 
 - Configurable baud rate.
 - Separate timing signals for transmit and receive operations.
 - Provides synchronized clocking for reliable SPI communication.
+
+## Output waveform:
+<img width="512" height="259" alt="image" src="https://github.com/user-attachments/assets/d69373e4-bc97-414c-8fae-3e9cd1fd0ff5" />
+
+<img width="512" height="94" alt="image" src="https://github.com/user-attachments/assets/8162a8d8-0aed-4328-aa9d-218ab09e504f" />
+
+## Inference:
+### Waveform Observations
+
+The simulation waveform verifies the correct operation of the **Baud Generator** and its timing signals.
+
+- The generated **SPI Serial Clock (`SCLK`)** is significantly slower than the system clock (`PCLK`), confirming that the baud generator correctly divides the input clock to generate the required SPI clock.
+
+- SPI activity begins only when the **Slave Select (`SS`)** signal is asserted low (`ss_i = 0`). This ensures that clock generation and SPI communication occur only when a slave device is selected.
+
+- When **CPOL = CPHA** (**SPI Mode 0** and **SPI Mode 3**):
+  - `mosi_send_sclk_o` is used as the transmit timing signal.
+  - `miso_receive_sclk_o` is used as the receive timing signal.
+  - These signals correspond to the clock edge defined for Modes 0 and 3.
+
+- When **CPOL ≠ CPHA** (**SPI Mode 1** and **SPI Mode 2**):
+  - `mosi_send_sclk0_o` is used as the transmit timing signal.
+  - `miso_receive_sclk0_o` is used as the receive timing signal.
+  - These signals correspond to the alternate clock edge required for Modes 1 and 2.
+
+- The **MOSI** transmit pulse occurs before the **MISO** receive pulse. This ensures that data is placed on the bus before it is sampled by the receiving device, satisfying SPI timing requirements.
+
+- The waveform confirms that the baud generator correctly switches between the two timing paths (`*_sclk_o` and `*_sclk0_o`) based on the selected **CPOL** and **CPHA** configuration.
+
+### Verification Summary
+
+The simulation verifies the following functionalities of the Baud Generator:
+
+- Correct SPI clock (`SCLK`) generation
+- Proper clock division from `PCLK`
+- Slave Select (`SS`) controlled SPI operation
+- Correct CPOL and CPHA mode selection
+- Accurate transmit timing signal generation
+- Accurate receive timing signal generation
+- Proper shift-before-sample timing sequence for reliable SPI communication
