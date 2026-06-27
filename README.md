@@ -359,7 +359,8 @@ The APB Slave Interface communicates with the remaining blocks of the SPI Master
   
 ## Output waveform:
 <img width="952" height="460" alt="image" src="https://github.com/user-attachments/assets/e8d2bcc0-432c-481e-8ae6-cf3abd9da159" />
-<img width="959" height="88" alt="image" src="https://github.com/user-attachments/assets/41960821-01b1-4c98-b699-3f25f54f0a2d" />
+<img width="946" height="113" alt="image" src="https://github.com/user-attachments/assets/c56e39a3-1fd8-4185-aeab-ff19cdebf4fb" />
+
 
 ## Inference:
 ### Waveform Observations
