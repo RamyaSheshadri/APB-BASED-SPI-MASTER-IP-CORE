@@ -356,17 +356,80 @@ The APB Slave Interface communicates with the remaining blocks of the SPI Master
 - Receives completed data from the **Shift Register** and stores it in the Data Register.
 - Updates the Status Register based on transfer status.
 - Generates interrupt requests whenever an SPI event such as transfer completion or mode fault occurs.
+  
+## Output waveform:
+<img width="952" height="460" alt="image" src="https://github.com/user-attachments/assets/e8d2bcc0-432c-481e-8ae6-cf3abd9da159" />
+<img width="959" height="88" alt="image" src="https://github.com/user-attachments/assets/41960821-01b1-4c98-b699-3f25f54f0a2d" />
+
+## Inference:
+### Waveform Observations
+
+The simulation waveform verifies the correct operation of the **APB Slave Interface** and confirms successful APB communication with the SPI Master.
+
+- **Reset Operation**
+  - `PRESET_n` is initially asserted low.
+  - All internal registers are reset to their default values before any APB transaction begins.
+
+- **APB Write Transactions**
+  - The `PSEL_i` and `PENABLE_i` signals correctly follow the APB transaction sequence (**SETUP → ENABLE**).
+  - Configuration data is successfully written into the SPI registers.
+
+- **Control Register 1 (CR1)**
+  - The value **`0x5C`** (`01011100`) is successfully written into CR1.
+  - The waveform confirms:
+    - `mstr_o = 1` (Master Mode enabled)
+    - `cpol_o = 1` (Clock Polarity = 1)
+    - `cpha_o = 1` (Clock Phase = 1)
+    - `lsbfe_o = 0` (MSB First transmission)
+
+- **Control Register 2 (CR2)**
+  - The value **`0x12`** (`00010010`) is successfully written into CR2.
+  - The waveform confirms:
+    - `MODFEN = 1` (Mode Fault Detection enabled)
+    - `spiswai_o = 1` (SPI Stop in Wait Mode enabled)
+
+- **Baud Rate Register (BR)**
+  - The value **`0x75`** (`01110101`) is successfully written.
+  - The generated baud-rate configuration is:
+    - `sppr_o = 111`
+    - `spr_o = 101`
+  - These values are forwarded to the Baud Generator for SPI clock generation.
+
+- **Data Register (DR)**
+  - The transmit data **`0xA5`** (`10100101`) is successfully written into the Data Register.
+  - The data is forwarded to the Shift Register for serial transmission.
+
+- **SPI Mode FSM**
+  - The SPI Mode FSM transitions correctly between:
+    - `spi_run`
+    - `spi_wait`
+    - `spi_run`
+  - This verifies proper SPI operating mode and wait-mode control.
+
+- **Transmit Operation**
+  - `send_data_o` generates a valid transmit request pulse.
+  - `data_mosi_o` carries the expected transmit data (`0xA5`).
+  - This confirms successful transfer of data from the Data Register to the Shift Register.
+
+- **APB Read Transactions**
+  - Register contents are correctly returned through `PRDATA_o`.
+  - The following values are successfully read back:
+    - `CR1 = 0x5C`
+    - `CR2 = 0x12`
+    - `BR = 0x75`
+  - After the read operation completes, `PRDATA_o` returns to zero, confirming that it is driven only during an active read transaction.
 
 ### Verification Summary
 
-The simulation verifies the following functionalities:
+The waveform confirms the following functionalities of the APB Slave Interface:
 
-- Successful APB register write operations.
-- Successful APB register read operations.
-- Correct register decoding based on the APB address.
-- Proper loading of CR1, CR2, BR, and DR registers.
-- Correct generation of CPOL, CPHA, LSBFE, SPPR, and SPR control signals.
-- Proper transmission of data from the Data Register to the Shift Register.
-- Correct read-back of register contents through `PRDATA`.
-- Proper operation of the APB protocol state machine (`IDLE → SETUP → ENABLE`).
-- Correct interrupt and status flag generation during SPI transactions.
+- Correct reset operation
+- Successful APB write transactions
+- Successful APB read transactions
+- Correct register decoding
+- Proper loading of CR1, CR2, BR, and DR registers
+- Correct SPI configuration signal generation
+- Proper baud-rate configuration
+- Correct SPI Mode FSM operation
+- Successful transmit data handling
+- Proper APB protocol implementation
