@@ -22,8 +22,9 @@ To understand the complete communication flow, let us consider a simple example 
 7. The SPI Master stores the received data in its data register.
 8. Finally, the CPU reads the received data through the APB interface.
 
-## Block diagram:
-<img width="512" height="337" alt="image" src="https://github.com/user-attachments/assets/a0fa8319-543d-4006-bf91-5d56389bece7" />
+## Block diagram of the Baud Generator block:
+<img width="257" height="179" alt="image" src="https://github.com/user-attachments/assets/6af4cc22-1421-4235-bcc8-dc05feec7672" />
+
 
 ## 1. Baud Generator (Serial Clock Generator)
 
