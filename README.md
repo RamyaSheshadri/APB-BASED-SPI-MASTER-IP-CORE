@@ -126,8 +126,9 @@ The simulation verifies the following functionalities of the Baud Generator:
 
 The **Shift Register** is the primary data-path block of the SPI Master. It is responsible for transmitting data from the Master to the Slave through the **MOSI** line and receiving data from the Slave through the **MISO** line. It performs parallel-to-serial conversion during transmission and serial-to-parallel conversion during reception.
 
-## Block diagram:
-<img width="512" height="325" alt="image" src="https://github.com/user-attachments/assets/08529a51-ee57-40a4-968e-3ff37fb41eea" />
+## Block diagram of shift register:
+<img width="237" height="167" alt="image" src="https://github.com/user-attachments/assets/cae9e7c4-fd84-4e86-9081-e2c0855415f0" />
+
 
 ### Functions
 
