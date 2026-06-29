@@ -64,22 +64,6 @@ During synthesis, the following concepts were explored:
 
 ---
 
-## Skills Gained
-
-Through this project, I gained practical experience in:
-
-* RTL Design using Verilog HDL
-* APB Protocol Implementation
-* SPI Master Architecture
-* Clock Generation and Baud Rate Configuration
-* Full-Duplex SPI Data Transfer
-* Functional Verification using ModelSim
-* RTL Linting using Synopsys VC SpyGlass
-* RTL Synthesis using Synopsys Design Compiler
-* Writing and understanding TCL scripts
-* Writing SpyGlass Lint project files
-* Timing, Area and Gate-Level Analysis
-
 ## Introduction
 
 This section provides the background behind the APB-based SPI Master IP Core, explains the motivation for integrating APB with SPI, and describes how the complete communication flow operates within an SoC.
