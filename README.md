@@ -37,6 +37,10 @@ In addition to generating `SCLK`, it also generates the internal timing signals 
 - Generates separate timing signals for data transmission and reception.
 - Synchronizes MOSI shifting and MISO sampling.
 
+## Block diagram of the Baud Generator block:
+<img width="257" height="179" alt="image" src="https://github.com/user-attachments/assets/6af4cc22-1421-4235-bcc8-dc05feec7672" />
+
+
 ### Inputs
 
 | Signal | Description |
@@ -60,8 +64,6 @@ In addition to generating `SCLK`, it also generates the internal timing signals 
 | `miso_receive_sclk0_o` | Alternate receive timing signal. |
 | `BaudRateDivisor_o` | Final clock divider value used to generate `SCLK`. |
 
-## Block diagram of the Baud Generator block:
-<img width="257" height="179" alt="image" src="https://github.com/user-attachments/assets/6af4cc22-1421-4235-bcc8-dc05feec7672" />
 
 ### Working
 
