@@ -737,3 +737,6 @@ No **Errors** or **Fatal** issues were reported, indicating that the design is f
 * Identified and analyzed coding quality issues before synthesis.
 * Learned to interpret SpyGlass summary reports and rule violations.
 
+## Conclusion
+
+This project successfully demonstrates the design and implementation of an **APB-interfaced SPI Master IP Core** using Verilog HDL. The design was modularly developed, functionally verified using **ModelSim**, analyzed using **Synopsys VC SpyGlass** for RTL linting, and synthesized using **Synopsys Design Compiler**. Through this project, I gained hands-on experience in RTL design, APB-SPI protocol integration, functional verification, linting, synthesis, TCL scripting, and technology mapping, providing a strong foundation in digital VLSI design and design flow.
