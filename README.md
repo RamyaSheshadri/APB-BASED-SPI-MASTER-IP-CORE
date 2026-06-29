@@ -261,9 +261,13 @@ The waveform confirms the following:
 
 ## 3. APB Slave Interface
 
-The **APB Slave Interface** acts as the communication bridge between the **CPU** and the **SPI Master**. It is responsible for receiving configuration commands and data from the processor through the APB bus, storing them in internal registers, and distributing the required control signals to the SPI hardware blocks.
+- The **APB Slave Interface** acts as the communication bridge between the **CPU** and the **SPI Master**. It is responsible for receiving configuration commands and data from the processor through the APB bus, storing them in internal registers, and distributing the required control signals to the SPI hardware blocks.
 
-The CPU never communicates directly with the Baud Generator, Shift Register, or SPI Control Logic. Instead, every SPI operation begins with an APB transaction, making the APB Slave Interface the central control block of the design.
+- The CPU never communicates directly with the Baud Generator, Shift Register, or SPI Control Logic. Instead, every SPI operation begins with an APB transaction, making the APB Slave Interface the central control block of the design.
+
+- APB Slave Interface contains all the CPU Configuration settings. The CPU communicates everything via this block. For shifting, CPU writes to APB Slave’s Data register, which is copied onto the Shift register and sent to slave via MOSI.
+While receiving, slave writes to shift register, which is sampled , via MISO and then sent to APB Slave, which is read by CPU.
+
 
 ## Block diagram of APB Slave Interface:
 <img width="345" height="234" alt="image" src="https://github.com/user-attachments/assets/66b2cfe7-4a3e-4895-9f24-fcc71a15a1d4" />
