@@ -49,15 +49,6 @@ The linting process checks for:
 * Unsafe RTL constructs
 * Design rule violations
 
-The generated report categorizes results into:
-
-* **Info**
-* **Warning**
-* **Error**
-* **Fatal**
-
-The objective is to eliminate all warnings, errors, and fatal issues before proceeding with simulation and synthesis.
-
 ---
 
 ## Synthesis
@@ -711,3 +702,38 @@ The synthesis process also provided practical understanding of:
 * Standard-cell based implementation
 * Timing constraints using TCL scripts
 * Gate-level optimization for area and timing
+
+### RTL Linting: 
+
+The RTL design was verified using **Synopsys VC SpyGlass** before simulation and synthesis to identify coding issues and ensure compliance with industry-standard RTL design guidelines.
+
+The generated **Summary Report** classifies messages into four categories:
+
+* **Info** – Informational messages about the design.
+* **Warning** – Potential coding issues that may affect design quality or portability.
+* **Error** – RTL issues that must be corrected before proceeding.
+* **Fatal** – Critical issues that prevent successful analysis.
+
+## Linting report:
+<img width="665" height="482" alt="image" src="https://github.com/user-attachments/assets/c1f3a99b-df47-469f-b025-2d55c2744dcf" />
+
+The report shown above contains:
+
+* **2 Informational Messages**
+
+  * **DetectTopDesignUnits** – Successfully identified the top-level design unit.
+  * **ElabSummary** – Successfully elaborated the RTL design.
+
+* **1 Warning**
+
+  * **STARC05-1.3.1.3** – Indicates that the asynchronous reset signal (`PRESET_n`) is also used as a normal combinational signal. According to the STARC RTL coding guidelines, an asynchronous reset should only be used for reset logic and not for combinational or synchronous logic.
+
+No **Errors** or **Fatal** issues were reported, indicating that the design is functionally suitable for simulation and synthesis.
+
+**Key Learning:**
+
+* Performed RTL linting using Synopsys VC SpyGlass.
+* Understood industry-standard RTL coding guidelines (STARC Rules).
+* Identified and analyzed coding quality issues before synthesis.
+* Learned to interpret SpyGlass summary reports and rule violations.
+
