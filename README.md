@@ -1,8 +1,6 @@
 # APB-BASED-SPI-MASTER-IP-CORE
 ## Author: Ramya Sheshadri
 
-# APB-Based SPI Master Design
-
 ## Project Overview
 
 This project focuses on the RTL design and verification of an **APB-based SPI Master Controller** using Verilog HDL. The SPI Master is designed as a modular architecture consisting of four major sub-blocks, each responsible for a specific functionality in the SPI communication protocol.
