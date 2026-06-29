@@ -91,7 +91,9 @@ Through this project, I gained practical experience in:
 * Writing SpyGlass Lint project files
 * Timing, Area and Gate-Level Analysis
 
- 
+## Introduction
+
+This section provides the background behind the APB-based SPI Master IP Core, explains the motivation for integrating APB with SPI, and describes how the complete communication flow operates within an SoC.
 
 Modern **System-on-Chip (SoC)** designs integrate multiple processing units, memories, and peripherals on a single chip. Efficient communication between these components is achieved using standardized bus protocols. While high-performance buses such as AXI are used for memory-intensive operations, low-speed peripherals like SPI, UART, GPIO, and timers are commonly connected through the Advanced Peripheral Bus (APB), which offers a simpler and lower-power interface.
 
