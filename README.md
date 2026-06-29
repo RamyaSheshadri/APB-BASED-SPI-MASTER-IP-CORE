@@ -22,9 +22,6 @@ To understand the complete communication flow, let us consider a simple example 
 7. The SPI Master stores the received data in its data register.
 8. Finally, the CPU reads the received data through the APB interface.
 
-## Block diagram of the Baud Generator block:
-<img width="257" height="179" alt="image" src="https://github.com/user-attachments/assets/6af4cc22-1421-4235-bcc8-dc05feec7672" />
-
 
 ## 1. Baud Generator (Serial Clock Generator)
 
@@ -62,6 +59,9 @@ In addition to generating `SCLK`, it also generates the internal timing signals 
 | `miso_receive_sclk_o` | Receive timing signal for MISO. |
 | `miso_receive_sclk0_o` | Alternate receive timing signal. |
 | `BaudRateDivisor_o` | Final clock divider value used to generate `SCLK`. |
+
+## Block diagram of the Baud Generator block:
+<img width="257" height="179" alt="image" src="https://github.com/user-attachments/assets/6af4cc22-1421-4235-bcc8-dc05feec7672" />
 
 ### Working
 
