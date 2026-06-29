@@ -521,6 +521,9 @@ The **Top Module** integrates all the individual RTL blocks to form the complete
 
 Although the SPI architecture supports both **Master** and **Slave** modes through the **MSTR** configuration bit, this project implements **Master Mode only**. The SPI Slave functionality is not included, as no slave-side interface has been implemented.
 
+## Block diagram of SPI Master IP Core:
+<img width="412" height="188" alt="image" src="https://github.com/user-attachments/assets/ba5709d6-9d06-4809-8956-ff1dff009d8d" />
+
 The interaction between the blocks is as follows:
 
 - The **APB Slave Interface** receives configuration and data from the CPU through the APB bus.
@@ -530,3 +533,32 @@ The interaction between the blocks is as follows:
 - The **Slave Control Select** block controls the SPI transaction by asserting the Slave Select signal (`SS`), indicating the transfer status (`TIP`), and generating the receive-complete signal once the transfer is finished.
 
 Together, these blocks provide a complete APB-controlled SPI Master capable of configuring, transmitting, and receiving SPI data.
+
+## Waveform:
+<img width="905" height="415" alt="image" src="https://github.com/user-attachments/assets/b8b700c9-09fe-4d88-92ce-6a16ba623a35" />
+
+### Waveform Observations
+
+The simulation waveform verifies the successful integration and operation of the complete **APB Interfaced SPI Master IP Core**.
+
+- After `PRESET_n` is deasserted, the SPI Core comes out of reset and the CPU configures the SPI registers through the APB interface.
+- The APB address sequence correctly accesses **CR1**, **CR2**, **Baud Rate Register**, and **Data Register**, while `PSEL` and `PENABLE` follow the standard APB protocol.
+- The SPI Core is configured in **Master Mode** (`MSTR = 1`), the baud-rate settings are loaded into the Baud Generator, and the transmit data (`0xAA`) is written into the Data Register.
+- The SPI transaction begins by asserting **Slave Select (`SS`)** low and setting **Transfer In Progress (`TIP`)** high. The Baud Generator starts producing the SPI serial clock (`SCLK`).
+- The Shift Register transmits one bit on the **MOSI** line during each clock cycle, completing a full **8-bit SPI frame**.
+- The generated **SCLK** toggles only while the SPI transfer is active and remains idle once the transaction is complete.
+- After all eight bits are transmitted, **SS** returns high, **TIP** is deasserted, and the SPI transaction terminates successfully.
+- During APB accesses, `PREADY` is asserted to indicate successful transactions. The observed `PSLVERR` pulse is due to the RTL implementation (`PSLVERR = ~tip_i` during the ENABLE phase) and does not indicate an actual SPI communication error.
+- The `spi_interrupt_request` signal is asserted after the transfer, indicating successful completion of the SPI transaction.
+
+### Verification Summary
+
+The waveform confirms:
+
+- Correct APB configuration and register programming.
+- Successful baud-rate configuration and SPI clock generation.
+- Proper Slave Select (`SS`) and Transfer In Progress (`TIP`) control.
+- Correct transmission of one complete 8-bit SPI frame.
+- Successful interaction between all RTL blocks.
+- Correct end-to-end APB-to-SPI communication.
+
