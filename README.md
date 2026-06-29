@@ -658,3 +658,56 @@ The waveform confirms:
 - Successful interaction between all RTL blocks.
 - Correct end-to-end APB-to-SPI communication.
 
+# Synthesis using SDC:
+
+After successful synthesis using **Synopsys Design Compiler**, the RTL design is converted into a technology-mapped gate-level implementation.
+
+### Unmapped Design
+
+Before technology mapping, the synthesized design exists as an **unmapped DDC (Design Compiler Database)**. At this stage:
+
+* The design consists of generic logic cells (GTECH cells).
+* No standard-cell library has been applied.
+* Cell delay, area, and power information are not available.
+* The design only represents the logical functionality of the RTL.
+---
+### Mapped Design
+
+After linking the target technology library and compiling the design, the unmapped design is converted into a **mapped DDC**.
+
+During technology mapping:
+
+* Generic logic is replaced with technology-specific standard cells.
+* Timing, area, and power information are assigned.
+* Flip-flops, multiplexers, buffers, and combinational logic are mapped to cells available in the target library.
+* The synthesized design becomes suitable for timing analysis and physical implementation.
+
+The mapped hierarchical schematic below shows the interconnection between the four SPI Master sub-blocks:
+
+* **APB Slave Interface**
+* **Slave Select Controller**
+* **Baud Generator**
+* **Shift Register**
+
+**Mapped Hierarchical Schematic**
+<img width="716" height="278" alt="Screenshot 2026-06-29 112722" src="https://github.com/user-attachments/assets/0738a99e-2f8c-49db-8f50-b39c7cfc37d0" />
+
+<img width="927" height="263" alt="Screenshot 2026-06-29 112801" src="https://github.com/user-attachments/assets/6e0219ee-30e5-483e-b130-a880eefa8053" />
+
+
+### Outcome of Synthesis
+
+Through synthesis, the following were obtained:
+
+* Technology-mapped gate-level netlist
+* Area report
+* Timing report
+* Power report
+* Hierarchical mapped schematic
+
+The synthesis process also provided practical understanding of:
+
+* Technology library mapping
+* Standard-cell based implementation
+* Timing constraints using TCL scripts
+* Gate-level optimization for area and timing
