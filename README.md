@@ -515,3 +515,18 @@ The waveform confirms:
 - Proper generation of the `receive_data_o` flag after transfer completion.
 - Successful SPI transaction control for multiple SPI operating modes.
 
+## Top Module
+
+The **Top Module** integrates all the individual RTL blocks to form the complete **APB Interfaced SPI Master IP Core**. Each block performs a specific function and communicates with the others through well-defined control and data signals.
+
+Although the SPI architecture supports both **Master** and **Slave** modes through the **MSTR** configuration bit, this project implements **Master Mode only**. The SPI Slave functionality is not included, as no slave-side interface has been implemented.
+
+The interaction between the blocks is as follows:
+
+- The **APB Slave Interface** receives configuration and data from the CPU through the APB bus.
+- The **Baud Rate Register** inside the APB Slave Interface provides the baud-rate configuration (`SPPR` and `SPR`) to the **Baud Generator**.
+- The **Baud Generator** divides the system clock (`PCLK`) and generates the required **SPI Serial Clock (`SCLK`)** along with the transmit and receive timing signals.
+- The **Shift Register** uses the generated timing signals together with the configured **CPOL** and **CPHA** values to determine the correct clock edge for transmitting (`MOSI`) and sampling (`MISO`) data.
+- The **Slave Control Select** block controls the SPI transaction by asserting the Slave Select signal (`SS`), indicating the transfer status (`TIP`), and generating the receive-complete signal once the transfer is finished.
+
+Together, these blocks provide a complete APB-controlled SPI Master capable of configuring, transmitting, and receiving SPI data.
