@@ -86,7 +86,7 @@ In addition to generating `SCLK`, it also generates the internal timing signals 
 Case 1: CPOL=CPHA
 <img width="955" height="361" alt="image" src="https://github.com/user-attachments/assets/5a16ab8b-cd5d-4724-806f-f0f60e50626d" />
 
-Case 2: CPOL!=CPHA
+Case 2: CPOL ≠ CPHA
 <img width="955" height="358" alt="image" src="https://github.com/user-attachments/assets/7c3e7e6b-7d9a-4790-80ed-166cc2eb69fc" />
 
 ## Inference:
