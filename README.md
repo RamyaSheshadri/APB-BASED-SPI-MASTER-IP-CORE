@@ -1,5 +1,97 @@
 # APB-BASED-SPI-MASTER-IP-CORE
-**Author:** Ramya Sheshadri
+## Author: Ramya Sheshadri
+
+# APB-Based SPI Master Design
+
+## Project Overview
+
+This project focuses on the RTL design and verification of an **APB-based SPI Master Controller** using Verilog HDL. The SPI Master is designed as a modular architecture consisting of four major sub-blocks, each responsible for a specific functionality in the SPI communication protocol.
+
+### SPI Master Sub-blocks
+
+#### 1. Baud Rate Generator
+
+* Generates the SPI Serial Clock (**SCLK**) by dividing the system clock (**PCLK**).
+* Supports configurable baud rates through programmable divider values.
+
+#### 2. Shift Register
+
+* Performs serial transmission and reception of data.
+* Handles data shifting on the **MOSI** line and sampling on the **MISO** line.
+* Enables **full-duplex communication**, allowing simultaneous transmission and reception.
+
+#### 3. APB Slave Interface
+
+* Acts as the interface between the CPU and the SPI Master.
+* Contains all the configuration registers such as Control Registers, Baud Rate Register, Status Register and Data Register.
+* Allows the CPU to configure SPI operating modes, baud rate, data transfer, and monitor status through the APB protocol.
+
+#### 4. Slave Select Controller
+
+* Generates the **Slave Select (SS)** signal.
+* Initiates SPI communication by selecting the slave device before data transmission begins.
+* Controls the transfer duration based on the programmed baud rate.
+
+---
+
+## Verification
+
+Each RTL sub-block was individually verified using **ModelSim** before integrating them into the complete SPI Master. Functional simulations were performed to verify correct APB transactions, SPI data transfer, clock generation, and slave selection.
+
+---
+
+## Linting
+
+RTL linting was performed using **Synopsys VC SpyGlass** to ensure the design follows recommended coding practices and is free from structural issues before simulation.
+
+The linting process checks for:
+
+* Coding style violations
+* Synthesis-related issues
+* Unsafe RTL constructs
+* Design rule violations
+
+The generated report categorizes results into:
+
+* **Info**
+* **Warning**
+* **Error**
+* **Fatal**
+
+The objective is to eliminate all warnings, errors, and fatal issues before proceeding with simulation and synthesis.
+
+---
+
+## Synthesis
+
+RTL synthesis was performed using **Synopsys Design Compiler** to convert the Verilog RTL into a technology-mapped gate-level netlist.
+
+During synthesis, the following concepts were explored:
+
+* Writing synthesis **TCL scripts**
+* Applying timing constraints
+* Technology library mapping
+* Understanding the conversion from an **unmapped DDC** (generic design representation without timing, area, or delay information) to a **mapped DDC** (technology-specific implementation with complete timing, area, and power information)
+
+---
+
+## Skills Gained
+
+Through this project, I gained practical experience in:
+
+* RTL Design using Verilog HDL
+* APB Protocol Implementation
+* SPI Master Architecture
+* Clock Generation and Baud Rate Configuration
+* Full-Duplex SPI Data Transfer
+* Functional Verification using ModelSim
+* RTL Linting using Synopsys VC SpyGlass
+* RTL Synthesis using Synopsys Design Compiler
+* Writing and understanding TCL scripts
+* Writing SpyGlass Lint project files
+* Timing, Area and Gate-Level Analysis
+
+ 
 
 Modern **System-on-Chip (SoC)** designs integrate multiple processing units, memories, and peripherals on a single chip. Efficient communication between these components is achieved using standardized bus protocols. While high-performance buses such as AXI are used for memory-intensive operations, low-speed peripherals like SPI, UART, GPIO, and timers are commonly connected through the Advanced Peripheral Bus (APB), which offers a simpler and lower-power interface.
 
