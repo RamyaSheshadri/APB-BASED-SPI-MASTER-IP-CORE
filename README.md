@@ -436,3 +436,82 @@ The waveform confirms the following functionalities of the APB Slave Interface:
 - Correct SPI Mode FSM operation
 - Successful transmit data handling
 - Proper APB protocol implementation
+
+## 4. SPI Slave Control Select
+
+The **SPI Slave Control Select** block is responsible for controlling the overall SPI transaction. It receives configuration and control signals from the APB Slave Interface and generates the control signals required to start, monitor, and terminate an SPI transfer.
+
+Unlike the Baud Generator and Shift Register, this block does **not** generate the SPI clock or transfer data. Instead, it acts as a transaction controller by selecting the slave, monitoring the transfer duration, and indicating when a transfer is in progress or completed.
+
+## Block diagram:
+<img width="485" height="203" alt="image" src="https://github.com/user-attachments/assets/db39efac-e03d-4533-9266-a4baed180e74" />
+
+### Functions
+
+- Initiates an SPI transaction upon receiving a transmit request.
+- Generates the active-low Slave Select (`ss_o`) signal.
+- Indicates transfer status using the `tip_o` (Transfer In Progress) signal.
+- Generates a receive-complete flag (`receive_data_o`) after the transaction finishes.
+- Uses the programmed baud-rate divisor to determine the transaction duration.
+- Supports different SPI operating modes through the `spi_mode_i` input.
+
+### Working
+
+When the APB Slave Interface asserts `send_data_i`, the Slave Control Select block begins an SPI transaction by asserting `ss_o` low, selecting the target SPI slave.
+
+During the transaction:
+
+- `tip_o` remains high, indicating that a transfer is in progress.
+- An internal counter tracks the transfer duration based on the programmed baud-rate divisor.
+- Once the required number of clock cycles has elapsed, the block asserts `receive_data_o` to indicate that valid received data is available.
+- Finally, `ss_o` is deasserted, `tip_o` returns low, and the SPI Master returns to the idle state.
+
+### Inputs
+
+| Signal | Description |
+|---------|-------------|
+| `PCLK` | System clock. |
+| `PRESET_n` | Active-low reset. |
+| `mstr_i` | Master/Slave configuration input. |
+| `send_data_i` | Requests the start of an SPI transfer. |
+| `spiswai_i` | Controls SPI operation during wait mode. |
+| `spi_mode_i` | Selects the SPI operating mode. |
+| `baudratedivisor_i` | Determines the transfer duration. |
+
+### Outputs
+
+| Signal | Description |
+|---------|-------------|
+| `ss_o` | Active-low Slave Select signal. |
+| `tip_o` | Indicates that an SPI transfer is in progress. |
+| `receive_data_o` | Indicates that the received data is ready to be stored by the APB Interface. |
+
+## Output waveform:
+- The counter starts only when send_data flag goes high. Slave select is pulled low, and TIP is high (TIP=~SS)
+<img width="952" height="341" alt="image" src="https://github.com/user-attachments/assets/fea9f157-3628-41a7-8da8-9e5db4b9bfc2" />
+
+- It counts upto specified target, and then resets. Here receive_data flag goes high, indicating it has received the data.
+<img width="955" height="337" alt="image" src="https://github.com/user-attachments/assets/273c58dc-5d0a-45d6-b8d4-c4017bfdf497" />
+
+### Waveform Observations
+
+The simulation waveform verifies the correct operation of the **SPI Slave Control Select** block.
+
+- After reset is released and **Master Mode** (`mstr = 1`) is enabled, a `send_data` pulse initiates the SPI transaction by asserting `ss_o = 0`, resetting the internal counter, and setting `tip_o = 1` to indicate that a transfer is in progress.
+
+- During the transaction, the internal counter increments on every `PCLK` cycle while `ss_o` remains low and `tip_o` remains high. The transfer duration is determined by the programmed baud-rate divisor (`target = baudrate_divisor × 16`).
+
+- When the counter reaches **`target - 1`**, the `receive_data_o` signal is asserted, indicating that valid received data is available in the Shift Register and can be transferred to the Data Register.
+
+- When the counter reaches the programmed **target** value, the SPI transaction is completed. The slave is deselected (`ss_o = 1`), `tip_o` is deasserted, and the counter returns to its idle value.
+
+### Verification Summary
+
+The waveform confirms:
+
+- Correct generation of the Slave Select (`ss_o`) signal.
+- Proper assertion and deassertion of the Transfer In Progress (`tip_o`) signal.
+- Correct counter-based transaction timing.
+- Proper generation of the `receive_data_o` flag after transfer completion.
+- Successful SPI transaction control for multiple SPI operating modes.
+
